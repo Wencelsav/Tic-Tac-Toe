@@ -1,128 +1,113 @@
-#include <iostream>
 
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <stdio.h>
+#include <stdlib.h>
 using namespace std;
 
+#define SPACE ' '
+char matrix[3][3] = { 
+	{ SPACE, SPACE, SPACE },
+	{ SPACE, SPACE, SPACE },
+	{ SPACE, SPACE, SPACE }
+};
+void get_player2_move(void),get_player1_move(void);
+void disp_matrix(void);
+char check(void);
+int main()
+{
+	char done;
+	printf("This is the game of Tic-Tac-Toe.\n");
+	
+	done = SPACE;
+	do {
+		disp_matrix();
+		get_player1_move(); 
+		done = check(); 
+		if (done != SPACE) break; 
+		get_player2_move();
+		done = check(); 
+	} while (done == SPACE);
+	if (done == 'X') cout <<"Player 1 won!\n";
+	else cout <<"Player 2 won!!!!\n";
+	disp_matrix();
+	return 0;
+}
 
 
-int main() {
-    setlocale(0, "");
+void get_player1_move(void)
+{
+	int x,y;
+	cout <<"Enter coordinates for your X.\n"<< "Row? ";
+	
+	cin >> x;
+	cout <<"Column? ";
+	cin >> y;
+	x--; y--;
+	if (x<0 || y<0 || x>2 || y>2 || matrix[x][y] != SPACE)
+	{
+		cout <<"Invalid move, try again.\n";
+		get_player1_move();
+	}
+	else matrix[x][y] = 'X';
+}
 
 
-    char cells[9] = {'-', '-', '-', '-', '-', '-', '-', '-', '-',};
+void get_player2_move(void)
+{
+	int x, y;
+	cout << "Enter coordinates for your O.\n" << "Row? ";
 
-    int cell;
-    int cell1;
-
-    cout << "------------" << "\n" << endl;
-    cout << "Номера клеток:" << endl;
-    cout << "-" << 1 << "-" << '|' << "-" << 2 << "-" << '|' << "-" << 3 << "-" << " |" << endl;
-    cout << "-" << 4 << "-" << '|' << "-" << 5 << "-" << '|' << "-" << 6 << "-" << " |" << endl;
-    cout << "-" << 7 << "-" << '|' << "-" << 8 << "-" << '|' << "-" << 9 << "-" << " |" << "\n" << endl;
-
-
-    cout << "Игровое поле (--- пусто):" << endl;
-    cout << "-" << cells[0] << "-" << '|' << "-" << cells[1] << "-" << '|' << "-" << cells[2] << "-" << " |" << endl;
-    cout << "-" << cells[3] << "-" << '|' << "-" << cells[4] << "-" << '|' << "-" << cells[5] << "-" << " |" << endl;
-    cout << "-" << cells[6] << "-" << '|' << "-" << cells[7] << "-" << '|' << "-" << cells[8] << "-" << " |" << "\n"
-         << endl;
-
-    cout << "------------\n" << endl;
+	cin >> x;
+	cout << "Column? ";
+	cin >> y;
+	x--; y--;
+	if (x<0 || y<0 || x>2 || y>2 || matrix[x][y] != SPACE)
+	{
+		cout << "Invalid move, try again.\n";
+		get_player1_move();
+	}
+	else matrix[x][y] = 'O';
+}
 
 
-    for (int o = 0; o <= 9; ++o) {
-        cout << "Введите номер клетки, куда ходить  X: ";
-        cin >> cell;
-        cells[cell - 1] = 'x';
+void disp_matrix(void)
+{
+	for (int y = 0; y < 3; y++)
+	{
+		cout << "+------+------+------+" << endl << "| ";
+		for (int x = 0; x < 3; x++)
+		{
+			if (!matrix[x][y]) cout << setw(4) << " ";
+			else cout << setw(4) << matrix[x][y];
+			cout << " | ";
+		}
+		cout << endl;
+	}
+	cout << "+------+------+------+" << endl << endl;
 
-        cout << "-" << cells[0] << "-" << '|' << "-" << cells[1] << "-" << '|' << "-" << cells[2] << "-" << " |"
-             << endl;
-        cout << "-" << cells[3] << "-" << '|' << "-" << cells[4] << "-" << '|' << "-" << cells[5] << "-" << " |"
-             << endl;
-        cout << "-" << cells[6] << "-" << '|' << "-" << cells[7] << "-" << '|' << "-" << cells[8] << "-" << " |" << "\n"
-             << endl;
-
-
-        cout << "Введите номер клетки, куда ходить 0: ";
-        cin >> cell1;
-        cells[cell1 - 1] = '0';
-
-        cout << "-" << cells[0] << "-" << '|' << "-" << cells[1] << "-" << '|' << "-" << cells[2] << "-" << " |"
-             << endl;
-        cout << "-" << cells[3] << "-" << '|' << "-" << cells[4] << "-" << '|' << "-" << cells[5] << "-" << " |"
-             << endl;
-        cout << "-" << cells[6] << "-" << '|' << "-" << cells[7] << "-" << '|' << "-" << cells[8] << "-" << " |" << "\n"
-             << endl;
+	
+}
 
 
-    }
-    if ((cells[0] == 'x') && (cells[1] == 'x') && (cells[2] == 'x')) {
-        cout << "Победа! X" << endl;
+char check(void)
+{
+	int t;
+	char *p;
+	for (t = 0; t<3; t++) {
+		p = &matrix[t][0];
+		if (*p == *(p + 1) && * (p + 1) == *(p + 2)) return *p;
+	}
+	for (t = 0; t<3; t++) {
+		p = &matrix[0][t];
+		if (*p == *(p + 3) && *(p + 3) == *(p + 6)) return *p;
+	}
 
-    }
-    if ((cells[3] == 'x') && (cells[4] == 'x') && (cells[5] == 'x')) {
-        cout << "Победа! X" << endl;
-
-    }
-    if ((cells[6] == 'x') && (cells[7] == 'x') && (cells[8] == 'x')) {
-        cout << "Победа! X" << endl;
-
-    }
-    if ((cells[0] == 'x') && (cells[3] == 'x') && (cells[6] == 'x')) {
-        cout << "Победа! X" << endl;
-
-    }
-    if ((cells[1] == 'x') && (cells[4] == 'x') && (cells[7] == 'x')) {
-        cout << "Победа! X" << endl;
-
-    }
-    if ((cells[2] == 'x') && (cells[5] == 'x') && (cells[8] == 'x')) {
-        cout << "Победа! X" << endl;
-
-    }
-    if ((cells[0] == 'x') && (cells[4] == 'x') && (cells[8] == 'x')) {
-        cout << "Победа! X" << endl;
-
-    }
-    if ((cells[2] == 'x') && (cells[4] == 'x') && (cells[6] == 'x')) {
-        cout << "Победа! X" << endl;
-
-    }
-    if ((cells[0] == '0') && (cells[1] == '0') && (cells[2] == '0')) {
-        cout << "Победа! X" << endl;
-
-    }
-    if ((cells[3] == '0') && (cells[4] == '0') && (cells[5] == '0')) {
-        cout << "Победа! X" << endl;
-
-    }
-    if ((cells[6] == '0') && (cells[7] == '0') && (cells[8] == '0')) {
-        cout << "Победа! X" << endl;
-
-        if ((cells[0] == '0') && (cells[3] == '0') && (cells[6] == '0')) {
-            cout << "Победа! X" << endl;
-
-        }
-        if ((cells[1] == '0') && (cells[4] == '0') && (cells[7] == '0')) {
-            cout << "Победа! X" << endl;
-
-        }
-        if ((cells[2] == '0') && (cells[5] == 'x') && (cells[8] == '0')) {
-            cout << "Победа! X" << endl;
-
-        }
-        if ((cells[0] == '0') && (cells[4] == '0') && (cells[8] == '0')) {
-            cout << "Победа! X" << endl;
-
-        }
-        if ((cells[2] == '0') && (cells[4] == '0') && (cells[6] == '0')) {
-            cout << "Победа! X" << endl;
-
-        }
-
-
-        system("pause");
-        return 0;
-
-
-    }
+	
+	if (matrix[0][0] == matrix[1][1] && matrix[1][1] == matrix[2][2])
+		return matrix[0][0];
+	if (matrix[0][2] == matrix[1][1] && matrix[1][1] == matrix[2][0])
+		return matrix[0][2];
+	return SPACE;
 }
