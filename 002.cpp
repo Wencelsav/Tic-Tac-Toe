@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -20,14 +19,15 @@ char check(void);
 int main()
 {
 	char done;
-	printf("This is the game of Tic-Tac-Toe.\n");
+	
 	
 	done = SPACE;
 	do {
 		disp_matrix();
 		get_player1_move(); 
 		done = check(); 
-		if (done != SPACE) break; 
+		if (done != SPACE) break;
+		disp_matrix();
 		get_player2_move();
 		done = check(); 
 		if (done != SPACE) break;
@@ -98,13 +98,13 @@ char check(void)
 {
 	int t;
 	char *p;
-	for (t = 0; t<3; t++) {
+	for (t = 0; t<5; t++) {
 		p = &matrix[t][0];
 		if (*p == *(p + 1) && * (p + 1) == *(p + 2)) return *p;
 	}
-	for (t = 0; t<3; t++) {
+	for (t = 0; t<5; t++) {
 		p = &matrix[0][t];
-		if (*p == *(p + 3) && *(p + 3) == *(p + 6)) return *p;
+		if (*p == *(p + 5) && *(p + 5) == *(p + 10)) return *p;
 	}
 
 	
