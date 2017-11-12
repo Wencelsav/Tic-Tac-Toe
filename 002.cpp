@@ -114,3 +114,50 @@ char check(void)
 		return matrix[0][2];
 	return SPACE;
 }
+/* bool CheckIsWin(string symbol)
+        { 
+            //Проверяем горизонталь и вертикаль
+            int win = 0;
+            int mdig, supdig, hor, ver;
+ 
+            for (int i = 0; i < 3; i++)
+            {
+                hor = 0; ver = 0;
+                for (int j = 0; j < 3; j++)
+                {
+                    if (GameBoardArr[i, j] == symbol)
+                    {
+                        hor++;
+                    }
+                    if (GameBoardArr[j, i] == symbol)
+                    {
+                        ver++;
+                    }
+                }
+                if (hor == 3 || ver == 3)
+                {
+                    return true;
+                }               
+               
+            }
+            
+            mdig = 0; supdig = 0;
+            //Диагонали
+            for (int i = 0; i < 3; i++)
+            {
+                if (GameBoardArr[i, i] == symbol)
+                {
+                    mdig++;
+                }
+                if (GameBoardArr[i,2 - i] == symbol )
+                {
+                    supdig++;
+                }
+            }
+            if (mdig == 3 || supdig == 3)
+            {
+                return true;
+            }
+             
+        }
+	*/
