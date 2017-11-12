@@ -26,8 +26,10 @@ int main()
 		get_player1_move(); 
 		done = check(); 
 		if (done != SPACE) break; 
+		disp_matrix();
 		get_player2_move();
 		done = check(); 
+		if (done != SPACE) break; 
 	} while (done == SPACE);
 	if (done == 'X') cout <<"Player 1 won!\n";
 	else cout <<"Player 2 won!!!!\n";
@@ -66,7 +68,7 @@ void get_player2_move(void)
 	if (x<0 || y<0 || x>2 || y>2 || matrix[x][y] != SPACE)
 	{
 		cout << "Invalid move, try again.\n";
-		get_player1_move();
+		get_player2_move();
 	}
 	else matrix[x][y] = 'O';
 }
