@@ -18,7 +18,7 @@ char check(void);
 int main()
 {
 	char done;
-	printf("This is the game of Tic-Tac-Toe.\n");
+	
 	
 	done = SPACE;
 	do {
