@@ -28,8 +28,7 @@ int main()
 		if (done != SPACE) break; 
 		disp_matrix();
 		get_player2_move();
-		done = check(); 
-		if (done != SPACE) break; 
+		done = check(); 		
 	} while (done == SPACE);
 	if (done == 'X') cout <<"Player 1 won!\n";
 	else cout <<"Player 2 won!!!!\n";
