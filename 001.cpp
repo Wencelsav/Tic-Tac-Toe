@@ -30,8 +30,9 @@ int main()
 		get_player2_move();
 		done = check(); 		
 	} while (done == SPACE);
-	if (done == 'X') cout <<"Player 1 won!\n";
-	else cout <<"Player 2 won!!!!\n";
+	if (done == 'X') cout <<'X'<< "won!\n";
+	if (done == 'O') cout <<'O'<< "won!\n";
+	else cout <<"Draw\n";
 	disp_matrix();
 	return 0;
 }
@@ -95,17 +96,12 @@ void disp_matrix(void)
 char check(void)
 {
 	int t;
-	char *p;
 	for (t = 0; t<3; t++) {
-		p = &matrix[t][0];
-		if (*p == *(p + 1) && * (p + 1) == *(p + 2)) return *p;
+		if (matrix[t][0] == matrix[t][1] && matrix[t][1] == matrix[t][2]) return matrix[t][0];
 	}
 	for (t = 0; t<3; t++) {
-		p = &matrix[0][t];
-		if (*p == *(p + 3) && *(p + 3) == *(p + 6)) return *p;
+		if (matrix[0][t] == matrix[1][t] && matrix[1][t] == matrix[2][t]) return matrix[0][t];
 	}
-
-	
 	if (matrix[0][0] == matrix[1][1] && matrix[1][1] == matrix[2][2])
 		return matrix[0][0];
 	if (matrix[0][2] == matrix[1][1] && matrix[1][1] == matrix[2][0])
