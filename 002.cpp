@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -68,9 +67,9 @@ void show_available_moves(char **array, char op) {
 }
 
 bool making_move(char **array, short move, char op) {
-	unsigned int k = 0;
-	for (unsigned int i = 0; i<5; i++) {
-		for (unsigned int j = 0; j<5; j++) {
+    int k = 0;
+	for (int i = 0; i<5; i++) {
+		for (int j = 0; j<5; j++) {
 			if (!(array[i][j] == 'X' || array[i][j] == 'O')) {
 				k++;
 			}
