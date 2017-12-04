@@ -1,163 +1,159 @@
+#include "stdafx.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include <stdio.h>
-#include <stdlib.h>
+
 using namespace std;
 
-#define SPACE ' '
-char matrix[5][5] = { 
-	{ SPACE, SPACE, SPACE, SPACE, SPACE },
-	{ SPACE, SPACE, SPACE, SPACE, SPACE },
-	{ SPACE, SPACE, SPACE, SPACE, SPACE },
-	{ SPACE, SPACE, SPACE, SPACE, SPACE },
-	{ SPACE, SPACE, SPACE, SPACE, SPACE }
-};
-void get_player2_move(void),get_player1_move(void);
-void disp_matrix(void);
-char check(void);
-int main()
-{
-	char done;
-	
-	
-	done = SPACE;
-	do {
-		disp_matrix();
-		get_player1_move(); 
-		done = check(); 
-		if (done != SPACE) break;
-		disp_matrix();
-		get_player2_move();
-		done = check(); 
-		if (done != SPACE) break;
-	} while (done == SPACE);
-	if (done == 'X') cout <<"Player 1 won!\n";
-	else cout <<"Player 2 won!!!!\n";
-	disp_matrix();
-	return 0;
-}
-
-
-void get_player1_move(void)
-{
-	int x,y;
-	cout <<"Enter coordinates for your X.\n"<< "Row? ";
-	
-	cin >> x;
-	cout <<"Column? ";
-	cin >> y;
-	x--; y--;
-	if (x<0 || y<0 || x>4 || y>4 || matrix[x][y] != SPACE)
-	{
-		cout <<"Invalid move, try again.\n";
-		get_player1_move();
+void delete_matrix(char** matrix, int rows) {
+	for (int i = 0; i<rows; i++) {
+		delete[]matrix[i];
 	}
-	else matrix[x][y] = 'X';
+	delete[]matrix;
 }
 
-
-void get_player2_move(void)
-{
-	int x, y;
-	cout << "Enter coordinates for your O.\n" << "Row? ";
-
-	cin >> x;
-	cout << "Column? ";
-	cin >> y;
-	x--; y--;
-	if (x<0 || y<0 || x>4 || y>4 || matrix[x][y] != SPACE)
-	{
-		cout << "Invalid move, try again.\n";
-		get_player2_move();
+char** create_matrix(char** array,int rows, int columns) {
+	array = new char *[rows];
+	for (int i = 0; i < rows; ++i) {
+		array[i] = new char[columns];
+		for (int j = 0; j < columns; ++j) {
+			array[i][j] = ' ';
+		}
 	}
-	else matrix[x][y] = 'O';
+	return array;
 }
 
-
-void disp_matrix(void)
+void disp_matrix(char **array)
 {
-	for (int y = 0; y < 5; y++)
+	for (int j = 0; j < 5; j++)
 	{
 		cout << "+------+------+------+------+------+" << endl << "| ";
-		for (int x = 0; x < 5; x++)
+		for (int i = 0; i < 5; i++)
 		{
-			if (!matrix[x][y]) cout << setw(4) << " ";
-			else cout << setw(4) << matrix[x][y];
+			if (!array[i][j]) cout << setw(4) << " ";
+			else cout << setw(4) << array[i][j];
 			cout << " | ";
 		}
 		cout << endl;
 	}
 	cout << "+------+------+------+------+------+" << endl << endl;
 
-	
+
 }
 
-
-char check(void)
-{
-	int t;
-	char *p;
-	for (t = 0; t<5; t++) {
-		p = &matrix[t][0];
-		if (*p == *(p + 1) && * (p + 1) == *(p + 2)) return *p;
+void show_available_moves(char **array, char op) {
+	int k = 0;
+	for (int i = 0; i<5; i++) {
+		for (int j = 0; j<5; j++) {
+			if (!(array[i][j] == 'X' || array[i][j] == 'O')) {
+				if (i == 0) {
+					cout << ++k << ". mark cell a" << j + 1 << " as " << op << endl;
+				}
+				if (i == 1) {
+					cout << ++k << ". mark cell b" << j + 1 << " as " << op << endl;
+				}
+				if (i == 2) {
+					cout << ++k << ". mark cell c" << j + 1 << " as " << op << endl;
+				}
+				if (i == 3) {
+					cout << ++k << ". mark cell d" << j + 1 << " as " << op << endl;
+				}
+				if (i == 4) {
+					cout << ++k << ". mark cell e" << j + 1 << " as " << op << endl;
+				}
+			}
+		}
 	}
-	for (t = 0; t<5; t++) {
-		p = &matrix[0][t];
-		if (*p == *(p + 5) && *(p + 5) == *(p + 10)) return *p;
-	}
-
-	
-	if (matrix[0][0] == matrix[1][1] && matrix[1][1] == matrix[2][2])
-		return matrix[0][0];
-	if (matrix[0][2] == matrix[1][1] && matrix[1][1] == matrix[2][0])
-		return matrix[0][2];
-	return SPACE;
+	cout << ++k << ". quit" << endl;
 }
-/* bool CheckIsWin(string symbol)
-        { 
-            //Проверяем горизонталь и вертикаль
-            int win = 0;
-            int mdig, supdig, hor, ver;
- 
-            for (int i = 0; i < 3; i++)
-            {
-                hor = 0; ver = 0;
-                for (int j = 0; j < 3; j++)
-                {
-                    if (GameBoardArr[i, j] == symbol)
-                    {
-                        hor++;
-                    }
-                    if (GameBoardArr[j, i] == symbol)
-                    {
-                        ver++;
-                    }
-                }
-                if (hor == 3 || ver == 3)
-                {
-                    return true;
-                }               
-               
-            }
-            
-            mdig = 0; supdig = 0;
-            //Диагонали
-            for (int i = 0; i < 3; i++)
-            {
-                if (GameBoardArr[i, i] == symbol)
-                {
-                    mdig++;
-                }
-                if (GameBoardArr[i,2 - i] == symbol )
-                {
-                    supdig++;
-                }
-            }
-            if (mdig == 3 || supdig == 3)
-            {
-                return true;
-            }
-             
-        }
-	*/
+
+bool making_move(char **array, short move, char op) {
+	unsigned int k = 0;
+	for (unsigned int i = 0; i<5; i++) {
+		for (unsigned int j = 0; j<5; j++) {
+			if (!(array[i][j] == 'X' || array[i][j] == 'O')) {
+				k++;
+			}
+			if (k == move) {
+				array[i][j] = op;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool win_game(char** array) {
+	int k = 0, t = 0;
+	for (int j = 0; j<5; j++) {
+		for (int i = 0; i<4; i++) {
+			if ((array[i][j] == 'X' || array[i][j] == 'O') && array[i][j] == array[i + 1][j]) k++;
+			if (k == 4) return true;
+		}
+		k = 0;
+	}
+	for (int i = 0; i<5; i++) {
+		for (int j = 0; j<4; j++) {
+			if ((array[i][j] == 'X' || array[i][j] == 'O') && array[i][j] == array[i][j + 1]) k++;
+			if (k == 4) return true;
+		}
+		k = 0;
+	}
+	for (int i = 0; i<4; i++) {
+		if ((array[i][i] == 'X' || array[i][i] == 'O') && array[i][i] == array[i + 1][i + 1]) k++;
+		if ((array[i][4 - i] == 'X' || array[i][4 - i] == 'O') && array[i][4 - i] == array[i + 1][4 - (i + 1)]) t++;
+		if (k == 4 || t == 4) return true;
+	}
+	return false;
+}
+
+bool proverka(char** array) {
+	int k = 0;
+	for (int i = 0; i<5; i++) {
+		for (int j = 0; j<5; j++) {
+			if (!(array[i][j] == 'X' || array[i][j] == 'O')) {
+				k++;
+			}
+			if (k>0) return true;
+		}
+	}
+	return false;
+}
+
+int main() {
+	int move,i = 0;
+	char **array = create_matrix(array, 5, 5);
+	char op;
+	bool ok = true, letter = true;
+
+	disp_matrix(array);
+
+	while (proverka(array)) {
+		if (letter == true) op = 'X';
+		else op = 'O';
+		show_available_moves(array, op);
+		cin >> move;
+		if (move == 26 - i) {
+			break;
+		}
+		while (move<1 || move>25 - i) {
+			cout << endl << "You can`t use this number, please, try again: ";
+			cin >> move;
+		}
+		ok = making_move(array, move, op);
+		if (ok != true) break;
+		disp_matrix(array);
+		if (win_game(array)) {
+			cout << endl << "Player " << op << " is winner!";
+			cin.get();
+			return 0;
+		}
+		letter = !letter;
+		i++;
+	}
+
+	cout << endl << "Thanks for the game!";
+	delete_matrix(array, 5);
+	cin.get();
+	return 0;
+}
