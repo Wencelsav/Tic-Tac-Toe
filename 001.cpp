@@ -60,7 +60,7 @@ void show_available_moves(char **array, char op) {
 	cout << ++k << ". quit" << endl;
 }
 
-bool making_move(char **array, short move, char op) {
+bool making_move(char **array, unsigned int move, char op) {
 	unsigned int k = 0;
 	for (unsigned int i = 0; i<3; i++) {
 		for (unsigned int j = 0; j<3; j++) {
@@ -114,10 +114,9 @@ bool proverka(char** array) {
 }
 
 int main() {
-	unsigned int i = 0;
+	int move,i = 0;
 	char **array = create_matrix(array, 3, 3);
 	char op;
-	short move;
 	bool ok = true, letter = true;
 
 	disp_matrix(array);
@@ -130,7 +129,7 @@ int main() {
 		if (move == 10 - i) {
 			break;
 		}
-		while (move<1 || move>(9 - i)) {
+		while (move<1 || move>9 - i) {
 			cout << endl << "You can`t use this number, please, try again: ";
 			cin >> move;
 		}
